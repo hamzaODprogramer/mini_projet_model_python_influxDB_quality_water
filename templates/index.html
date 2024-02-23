@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+            <!-- <title>Aqua Water Purifier | Smarteyeapps.com</title>
+            <link rel="shortcut icon" href="assets/images/fav.png" type="image/x-icon">
+            <link rel="shortcut icon" href="assets/images/fav.jpg">
+            <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+            <link rel="stylesheet" href="assets/plugins/testimonial/css/owl.carousel.min.css">
+            <link rel="stylesheet" href="assets/plugins/testimonial/css/owl.theme.min.css">
+            <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+            <link rel="stylesheet" href="assets//css/animate.min.css"> -->
+{% block head %} {% endblock %}
+{% block content %}    
+       <!-- ##################### Slider Starts Here #################### -->
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item ">
+                  <img src="{{ url_for('static' , filename='images/slider/s1.jpg') }}" class="d-block w-100" alt="...">
+                  <div class="carousel-caption   d-md-block">
+                      <div class="row">
+                           <div class="col-lg-6 animate__animated  animate__bounceInLeft text-start ">
+                              <h1 class="fs-12 fw-bolder text-start ">Ests Water<br><span class="text-primary" style="font-size: 45px;">Tests de qualité de l'eau</span> </h1> 
+                              <p class="text-dark d-none d-md-block text-start">Explorez les différentes facettes de notre projet sur la qualité de l’eau… Notre module d’arbre de décision utilise des données scientifiques pour évaluer la qualité de l’eau</p>
+                              <div class="d-inline-block pt-5 text-start d-none d-lg-block">
+                                  <button class="btn btn-primary shadow fs-5 fw-bolder px-5 py-2">Essayez maintenant</button>
+                              </div>
+                           </div>
+                           <div class="col-lg-6 animate__animated animate__bounceInRight d-none d-lg-block">
+                               <img class="w-100" src="{{ url_for('static' , filename='images/sp1.jpg') }}" alt="">
+                           </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item active">
+                  <img src="{{ url_for('static' , filename='images/slider/s2.jpg') }}" class="d-block w-100" alt="...">
+                  <div class="carousel-caption  d-md-block">
+                      <div class="row">
+                           <div class="col-lg-6  animate__animated  animate__bounceInLeft">
+                              <h1 class="fs-12 fw-bolder text-start">Ests Water<br><span class="text-primary" style="font-size: 45px;">Tests de qualité de l'eau</span> </h1> 
+                              <p class="d-none d-md-block text-dark text-start">Explorez les différentes facettes de notre projet sur la qualité de l’eau… Notre module d’arbre de décision utilise des données scientifiques pour évaluer la qualité de l’eau</p>
+                              <div class="d-inline-block pt-5 text-start d-none d-lg-block">
+                                  <button onclick="window.location.href='{{ url_for('forme') }}'" class="btn btn-primary shadow fs-5 fw-bolder px-5 py-2">Essayez maintenant</button>
+                              </div>
+                           </div>
+                           <div class="col-lg-6 animate__animated animate__bounceInRight d-none d-lg-block">
+                              <img class="w-100" src="{{ url_for('static' , filename='images/sp2.png') }}" alt="">
+                           </div>
+                            
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!-- ##################### Why Choos US #################### -->
+             <div id="service" class="container-fluid products bg-gray big-padding pt-3">
+               <div class="container-xl">
+                   <div class="section-title row">
+                        <h2 class="fs-1 fw-bold">Nos Services</h2>
+                        <p> Notre plateforme offre un service unique d’évaluation de la qualité de l’eau. Grâce à notre module d’arbre de décision, nous analysons divers paramètres de l’eau pour fournir une évaluation précise de sa qualité. Notre objectif est de sensibiliser le public à l’importance de l’eau propre et de fournir des outils pour aider à surveiller la qualité de l’eau. Nous nous engageons à protéger la santé publique et l’environnement.</p>
+                    </div>
+               </div>
+           </div>
+         <footer>
+            <div class="inner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3 foot-about">
+                            <h4>About US</h4>
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit libero pellentesque libero interdum, id mattis felis dictum. Praesent eget lacus tempor justo efficitur malesuada. Cras ut suscipit nisi.</p>
+
+                            <ul>
+                                <li>23 Rose Stren Melbourn</li>
+                                <li>sales@smarteyeapps.com</li>
+                                <li>+91 876 766 554</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-3 foot-post">
+                            <h4>Latest Posts</h4>
+
+                            <div class="post-row">
+                                <div class="image">
+                                    <img src="assets/images/album/a6.jpg" alt="">
+                                </div>
+                                <div class="detail">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit </p>
+                                </div>
+                            </div>
+
+                            <div class="post-row">
+                                <div class="image">
+                                    <img src="assets/images/album/a5.jpg" alt="">
+                                </div>
+                                <div class="detail">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit </p>
+                                </div>
+                            </div>
+
+                            <div class="post-row">
+                                <div class="image">
+                                    <img src="assets/images/album/a4.jpg" alt="">
+                                </div>
+                                <div class="detail">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 foot-services">
+                            <h4>Top Category</h4>
+
+                            <ul>
+                                <li><a href="">Target Statergy</a></li>
+                                <li><a href="">Web Analytics</a></li>
+                                <li><a href="">Page Monitering</a></li>
+                                <li><a href="">Page Optimization</a></li>
+                                <li><a href="">Target Statergy</a></li>
+                                <li><a href="">Email Marketing</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-3 foot-news">
+                            <h4>News Letter</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo neque, vehicula eget eros. </p>
+
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control mb-0" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-primary" id="basic-addon2"><i class="bi text-white bi-send"></i></span>
+                                </div>
+                            </div>
+
+                            <ul>
+                                <li><i class="bi bi-facebook"></i></li>
+                                <li><i class="bi bi-twitter"></i></li>
+                                <li><i class="bi bi-instagram"></i></li>
+                                <li><i class="bi bi-linkedin"></i></li>
+                                <li><i class="bi bi-pinterest"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>         
+    {% endblock %}
