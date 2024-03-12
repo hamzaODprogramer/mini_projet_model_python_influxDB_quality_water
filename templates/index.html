@@ -9,6 +9,37 @@
             <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
             <link rel="stylesheet" href="assets//css/animate.min.css"> -->
 {% block head %} {% endblock %}
+
+
+{% block header %} 
+    <header>
+        <div id="menu-jk" class="nav-part shadow-md bg-white navcol">
+            <div class="container-lg">
+                <div class="row  p-2">
+                    <div class="col-lg-3 p-1">
+                    <a href="index.html">
+                        <img class="max-230" src="{{ url_for('static' , filename='images/ligo.png') }}" alt="">
+                        </a>
+                        <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none pt-1 ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                    </div>
+                    <div id="menu" class="col-lg-9 d-none pt-1 d-lg-block">
+                        <ul class="fw-bold nacul fs-7">
+                            <li style="visibility: hidden;" class="float-start p-3 px-4"><a>Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('index') }}">Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="#service">Services</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('forme') }}">test</a></li>
+                            <li class="float-end d-none d-md-block pt-2">
+                                <button onclick="window.location.href='{{ url_for('login') }}'" class="btn fw-bolder px-4 py-2 btn-outline-primary">connexion</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
 {% block content %}    
        <!-- ##################### Slider Starts Here #################### -->
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -62,7 +93,42 @@
                <div class="container-xl">
                    <div class="section-title row">
                         <h2 class="fs-1 fw-bold">Nos Services</h2>
-                        <p> Notre plateforme offre un service unique d’évaluation de la qualité de l’eau. Grâce à notre module d’arbre de décision, nous analysons divers paramètres de l’eau pour fournir une évaluation précise de sa qualité. Notre objectif est de sensibiliser le public à l’importance de l’eau propre et de fournir des outils pour aider à surveiller la qualité de l’eau. Nous nous engageons à protéger la santé publique et l’environnement.</p>
+                        <p class="mt-4"> Notre plateforme offre un service unique d’évaluation de la qualité de l’eau. Grâce à notre module d’arbre de décision, nous analysons divers paramètres de l’eau pour fournir une évaluation précise de sa qualité. Notre objectif est de sensibiliser le public à l’importance de l’eau propre et de fournir des outils pour aider à surveiller la qualité de l’eau. Nous nous engageons à protéger la santé publique et l’environnement.</p>
+                        <div class="container overflow-hidden mt-5">
+                            <div class="row gy-4 gy-xl-0">
+                              <div class="col">
+                                <div class="card border-0 border-bottom border-primary shadow-sm">
+                                  <div class="card-body text-center p-4 p-xxl-5">
+                                    <img src="{{ url_for('static' , filename='images/evaluate.png') }}" />
+                                    <h4 class="mb-4 mt-3">test de Qualité</h4>
+                                    <p class="mb-4 text-secondary">Nous analysons un échantillon de votre eau et vous fournissons un rapport détaillé sur sa qualité.</p>
+                                    <a href="{{ url_for('forme') }}" class="fw-bold text-decoration-none link-primary">
+                                        Essayez maintenant
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                                      </svg>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="card border-0 border-bottom border-primary shadow-sm">
+                                  <div class="card-body text-center p-4 p-xxl-5">
+                                    <img width="60px" src="{{ url_for('static' , filename='images/chart.png') }}" />
+                                    <h4 class="mb-4 mt-3">voir des statistique</h4>
+                                    <p style="margin-top: 28px;" class="mb-4 text-secondary">Explorez nos données et statistiques pour prendre des décisions éclairées en matière de santé et d'environnement.</p>
+                                    <a href="{{ url_for('statics') }}" class="fw-bold text-decoration-none link-primary">
+                                        Essayez maintenant
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                                      </svg>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
                     </div>
                </div>
            </div>

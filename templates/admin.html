@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .semipolar-spinner, .semipolar-spinner * {
+            box-sizing: border-box;
+        }
+
+        .semipolar-spinner {
+            height: 60%;
+            width: 65px;
+            position: relative;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .semipolar-spinner .ring {
+            border-radius: 50%;
+            position: absolute;
+            border: calc(60% * 0.05) solid transparent;
+            border-top-color: #ffffff; /* White color */
+            border-left-color: #ffffff; /* White color */
+            animation: semipolar-spinner-animation 2s infinite;
+        }
+
+        .semipolar-spinner .ring:nth-child(1) {
+            height: calc(60% - 60% * 0.2 * 0);
+            width: calc(65px - 65px * 0.2 * 0);
+            top: calc(60% * 0.1 * 0);
+            left: calc(65px * 0.1 * 0);
+            animation-delay: calc(2000ms * 0.1 * 4);
+            z-index: 5;
+        }
+
+        .semipolar-spinner .ring:nth-child(2) {
+            /* Add styles for other rings as needed */
+        }
+
+        @keyframes semipolar-spinner-animation {
+            50% {
+                transform: rotate(360deg) scale(0.7);
+            }
+        }
+    </style>
+{% endblock %}
+
+
+{% block header %} 
+    <header>
+        <div id="menu-jk" class="nav-part shadow-md bg-white navcol">
+            <div class="container-lg">
+                <div class="row  p-2">
+                    <div class="col-lg-3 p-1">
+                    <a href="index.html">
+                        <img class="max-230" src="{{ url_for('static' , filename='images/ligo.png') }}" alt="">
+                        </a>
+                        <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none pt-1 ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                    </div>
+                    <div id="menu" class="col-lg-9 d-none pt-1 d-lg-block">
+                        <ul class="fw-bold nacul fs-7">
+                            <li class="float-end d-none d-md-block pt-2">
+                                <button onclick="window.location.href='{{ url_for('forme') }}'" class="btn fw-bolder px-4 py-2 btn-primary">Deconnexion</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}  
+<div style="min-height:100vh;">
+    <div style="min-height:100vh;">
+      <div style="min-height:100vh;">
+        <div style="margin-top: 0px;background-image: url('{{ url_for('static', filename='images/slider/s2.jpg') }}');">
+            <div class="row">
+                <div style="margin-top: 130px;width: 80%;padding-bottom: 30px;" class="container" id="forme_css">
+                    <form method="post" action="/influxDB" id="contactForm" class="forme_css" onsubmit="showSpinner()">
+                        <div class="row">
+                            <div class="col webAdmin" style="max-height: 460px;overflow-y: scroll;">
+                                <h3 class="mb-3 tadmin">Configure influxDB connection</h3>
+                                <div class="mb-0">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">brucket</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="brucket" type="text" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">measurement</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="measurement" type="text" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">api token</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="api_token" type="text" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">url</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="url" type="text" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">org</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="org" type="text" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">nombre des lignes</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="nb_rows" type="number" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="coliformQuantiTrayMpn100ML">data source</label>
+                                    <input class="form-control" id="coliformQuantiTrayMpn100ML" name="csv" type="file" placeholder="Coliform (Quanti-Tray) (MPN /100mL)" data-sb-validations="required" />
+                                    <div class="invalid-feedback" data-sb-feedback="coliformQuantiTrayMpn100ML:required">Coliform (Quanti-Tray) (MPN /100mL) is required.</div>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btnAdmin btn btn-primary cursor-pointer btn-lg " id="submitButton" type="submit">generer module</button>
+                                </div>
+                            </div>
+                            <div class="col" style="display: flex;justify-content: center;align-items: center;">
+                                <img src="{{ url_for('static' , filename='images/admin.png') }}" width="90%" style="background: transparent;opacity: 30%;margin-top: 50px;"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="visibility: hidden;min-height: 140px;">
+
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.onload = () => {
+        if('{{ error_message }}' == "yes" ){
+            Swal.fire({
+                title: "Il y a une erreur dans le système",
+                icon : 'error'
+            });
+        }  
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Check if the 'data' parameter exists in the URL
+        var dataParameter = getUrlParameter('data');
+
+        if (dataParameter !== '') {
+            Swal.fire({
+                title: "le module est génèrer",
+                icon : 'success'
+            });  
+        }
+    }      
+    function showSpinner(){
+        let btn = document.getElementById('submitButton')
+        btn.innerHTML = `
+            <div class="spinner-border text-light" role="status">
+                <span class="sr-only"><span>
+            </div>
+        `
+    }
+
+  </script>
+
+{% endblock %}  
+
+

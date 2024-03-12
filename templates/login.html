@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block header %} 
+    <header>
+        <div id="menu-jk" class="nav-part shadow-md bg-white navcol">
+            <div class="container-lg">
+                <div class="row  p-2">
+                    <div class="col-lg-3 p-1">
+                    <a href="index.html">
+                        <img class="max-230" src="{{ url_for('static' , filename='images/ligo.png') }}" alt="">
+                        </a>
+                        <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none pt-1 ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                    </div>
+                    <div id="menu" class="col-lg-9 d-none pt-1 d-lg-block">
+                        <ul class="fw-bold nacul fs-7">
+                            <li style="visibility: hidden;" class="float-start p-3 px-4"><a>Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('index') }}">Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="#service">Services</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('forme') }}">test</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block content %}  
+<div style="min-height:100vh;">
+    <div style="min-height:100vh;">
+      <div style="min-height:100vh;">
+        <div style="margin-top: 0px;background-image: url('{{ url_for('static', filename='images/slider/s2.jpg') }}');">
+            <div class="row">
+                <div style="margin-top: 130px;width: 40%;padding-bottom: 30px;" class="container" id="forme_css">
+                    <form method="post" action="/check_login" id="contactForm" class="forme_css">
+                        <div class="form-floating mb-3" style="display: flex;justify-content: center;">
+                            <img class="max-230" src="{{ url_for('static' , filename='images/ligo.png') }}" alt="">
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input name="username" type="text" class="form-control" id="floatingInput">
+                            <label for="floatingInput">Username</label>
+                          </div>
+                          <div class="form-floating mb-3">
+                            <input name="password" type="password" class="form-control" id="floatingPassword">
+                            <label for="floatingPassword">Password</label>
+                          </div>
+            
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                            <label class="form-check-label" for="rememberPasswordCheck">
+                              Remember password
+                            </label>
+                          </div>
+                          <div class="d-grid">
+                            <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">
+                                connexion
+                            </button>
+                          </div>
+                    </form>
+                </div>
+                <div style="visibility: hidden;min-height: 140px;">
+
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.onload = () => {
+        if('{{ data }}' == '[&#39;Excellent&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Excellente",
+                text: "L’eau est d’une qualité exceptionnelle, dépassant toutes les normes de salubrité. Idéale pour toutes les utilisations.",
+                imageUrl: "{{ url_for('static',filename='images/alert/excellent.jpg') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }else if('{{ data }}' == '[&#39;Poor&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Faible",
+                text: "L’eau est de qualité inférieure, ne respectant pas certaines normes de salubrité. Un traitement est recommandé avant utilisation..",
+                imageUrl: "{{ url_for('static',filename='images/alert/poor.jpg') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }else if('{{ data }}' == '[&#39;Good&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Bonne",
+                text: "L’eau est de bonne qualité, respectant toutes les normes de salubrité. Convient à la plupart des utilisations.",
+                imageUrl: "{{ url_for('static',filename='images/alert/good.jpg') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }else if('{{ data }}' == '[&#39;Fair&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Moyenne",
+                text: "L’eau est de qualité moyenne, respectant la plupart des normes de salubrité. Certaines utilisations peuvent nécessiter un traitement supplémentaire",
+                imageUrl: "{{ url_for('static',filename='images/alert/fair.png') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }else if('{{ data }}' == '[&#39;Very Good&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Très Bonne",
+                text: "L’eau est de très bonne qualité, respectant presque toutes les normes de salubrité. Convient à presque toutes les utilisations",
+                imageUrl: "{{ url_for('static',filename='images/alert/very_good.png') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }else if('{{ data }}' == '[&#39;Sample class&#39;]'){
+            Swal.fire({
+                title: "Qualité d’eau : Classe d’échantillon",
+                text: "Ceci est une classe d’échantillon utilisée pour tester les fonctionnalités de l’application. Les résultats peuvent ne pas refléter la qualité réelle de l’eau..",
+                imageUrl: "{{ url_for('static',filename='images/alert/simple_class.png') }}",
+                imageWidth: 200,
+                imageHeight: 200,
+                imageAlt: "Custom image"
+            });
+        }
+        
+    }
+  </script>
+{% endblock %}  

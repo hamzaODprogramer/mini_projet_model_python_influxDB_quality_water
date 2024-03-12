@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+            
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-title"></script>
+    <style>
+        .chart-container {
+            margin-bottom: 30px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>   
+{% endblock %}
+
+{% block header %} 
+    <header>
+        <div id="menu-jk" class="nav-part shadow-md bg-white navcol">
+            <div class="container-lg">
+                <div class="row  p-2">
+                    <div class="col-lg-3 p-1">
+                    <a href="index.html">
+                        <img class="max-230" src="{{ url_for('static' , filename='images/ligo.png') }}" alt="">
+                        </a>
+                        <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none pt-1 ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                    </div>
+                    <div id="menu" class="col-lg-9 d-none pt-1 d-lg-block">
+                        <ul class="fw-bold nacul fs-7">
+                            <li style="visibility: hidden;" class="float-start p-3 px-4"><a>Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('index') }}">Acceuil</a></li>
+                            <li class="float-start p-3 px-4"><a href="#service">Services</a></li>
+                            <li class="float-start p-3 px-4"><a href="{{ url_for('forme') }}">test</a></li>
+                            <li class="float-end d-none d-md-block pt-2">
+                                <button onclick="window.location.href='{{ url_for('login') }}'" class="btn fw-bolder px-4 py-2 btn-outline-primary">connexion</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block content %}  
+<div style="min-height:100vh;">
+    <div style="min-height:100vh;">
+      <div style="min-height:100vh;">
+        <div class="p-5" style="margin-top: 0px;background-image: url('{{ url_for('static', filename='images/slider/s2.jpg') }}');">
+            <div class="row p-3 pt-5" style="padding: 50px;">
+                <!-- Chart 1: Bar Chart -->
+                <div class="col-md-6 chart-container forme_css">
+                    <span class="chart-title">Taille des Produits dans Chaque Qualité</span>
+                    <canvas id="barChart" style="min-height: 380px;"></canvas>
+                </div>
+                
+                <!-- Chart 2: Line Chart -->
+                <div class="col-md-6 chart-container forme_css">
+                    <span class="chart-title">Nombre de catégories</span>
+                    <canvas id="doughnutChart" style="max-height: 350px;"></canvas>
+                </div>
+              
+                <!-- Chart 3: Doughnut Chart -->
+                <div class="col-md-12 chart-container forme_css">
+                    <span class="chart-title">Évolution des valeurs de Chlore Libre Résiduel (mg/L) dans le temps</span>
+                    <canvas id="lineChart" style="width: 100%; max-height: 400px;"></canvas>
+                </div>
+              
+                <!-- Chart 4: Radar Chart -->
+                <div class="col-md-12 chart-container forme_css">
+                    <span class="chart-title">La qualité correspondant à chaque instant</span>
+                    <canvas id="scatterChart" style="width: 100%; max-height: 400px;"></canvas>
+                </div>
+            
+                <div style="visibility: hidden; min-height: 140px;"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        // Sample data (replace with your actual data)
+        window.onload = async () => {
+            const response = await fetch('/get_Chlorine_Time_data', {
+                method: 'GET',
+                headers: { "Content-Type": "application/json" },
+                cache : 'no-store'
+            });
+
+            const data = await response.json();
+            
+            // Select every 10th data point to display 36 points
+            const filteredData = data.filter((entry, index) => index % Math.ceil(data.length / 36) === 0);
+
+            // Extract dates and sort them
+            const formattedDates = filteredData.map(entry => new Date(entry._time))
+                                            .sort((a, b) => a - b)
+                                            .map(timestamp => {
+                                                const yyyy = timestamp.getFullYear();
+                                                const mm = String(timestamp.getMonth() + 1).padStart(2, '0');
+                                                const dd = String(timestamp.getDate()).padStart(2, '0');
+                                                return `${yyyy}-${mm}-${dd}`;
+                                            });
+
+            // Update chart datasets with the received data
+            lineChart.data.labels = formattedDates;
+            lineChart.data.datasets[0].data = filteredData.map(entry => parseFloat(entry["Residual Free Chlorine (mg/L)"]));
+
+            // Update the chart
+            lineChart.update();
+
+
+            /*****************************  BAR CHART  *****************************************/
+            // Process data to calculate average values for each category
+            const parameters = ['Coliform (Quanti-Tray) (MPN /100mL)', 'E.coli(Quanti-Tray) (MPN/100mL)', 'Fluoride (mg/L)', 'Residual Free Chlorine (mg/L)'];
+            const categoriesBar = [...new Set(data.map(entry => entry["Sample class"]))];
+
+            // Initialize arrays for datasets and labels
+            const datasets = parameters.map(parameter => ({
+                label: parameter,
+                data: [],
+                backgroundColor: getRandomColor(), // Function to generate random colors
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }));
+            const labels = categoriesBar;
+
+            // Loop through each category
+            categoriesBar.forEach(category => {
+                const categoryData = data.filter(entry => entry["Sample class"] === category);
+
+                // Initialize array to store total for each parameter
+                const totalValues = Array(parameters.length).fill(0);
+
+                // Loop through each parameter and calculate the average for the category
+                parameters.forEach((parameter, index) => {
+                    const total = categoryData.reduce((sum, entry) => sum + parseFloat(entry[parameter] || 0), 0);
+                    totalValues[index] += total;
+                });
+
+                // Add total values to datasets
+                datasets.forEach((dataset, index) => {
+                    dataset.data.push(totalValues[index]);
+                });
+            });
+
+            // Update chart datasets with the received data
+            barChart.data.labels = labels;
+            barChart.data.datasets = datasets;
+
+            // Update the chart
+            barChart.update();
+
+            /****************************** DoughnutChart ************************************/
+
+            // Extract the "Sample class" values from the data
+            const sampleClasses = data.map(entry => entry["Sample class"]);
+
+            // Count the occurrences of each "Sample class"
+            const classCounts = sampleClasses.reduce((counts, sampleClass) => {
+                counts[sampleClass] = (counts[sampleClass] || 0) + 1;
+                return counts;
+            }, {});
+
+            // Define the order of categories for the labels
+            const categoriesDoughnutChart = ['Fair', 'Poor', 'Very Good', 'Excellent', 'Good'];
+
+            // Create an array of counts in the order of categories
+            const countsArray = categoriesDoughnutChart.map(category => classCounts[category] || 0);
+
+            // Update chart datasets with the received data
+            doughnutChart.data.labels = ['Moyenne', 'Médiocre', 'Très Bon', 'Excellent', 'Bon'];
+            doughnutChart.data.datasets[0].data = countsArray;
+
+            // Update the chart
+            doughnutChart.update();
+
+            /************************** scatterChart **********************************/
+            // Extract "Sample class" values and assign numerical values
+            const sampleClassValues = Array.from(new Set(filteredData.map(entry => entry["Sample class"])));
+
+            // Generate an array of unique colors for each Sample Class
+            const classColors = sampleClassValues.map(() => getRandomColor());
+
+            // Update chart datasets with the received data
+            scatterChart.data.labels = formattedDates;
+
+            // Map the "Sample class" values to their corresponding index in the unique values array
+            scatterChart.data.datasets[0].data = filteredData.map((entry, index) => ({
+                x: new Date(entry["_time"]).getTime(),
+                y: entry["Sample class"],
+                pointBackgroundColor: "rgba(255, 99, 132, 1)", // Set the point radius to a larger value
+            }));
+
+            // Update Y-axis scale
+            scatterChart.options.scales.y = {
+                type: 'category',
+                labels: sampleClassValues.map(String)
+            };
+
+            // Update the chart
+            scatterChart.update();
+        };
+
+        var barChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                label: 'Bar Chart',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [10, 20, 30],
+
+            }]
+        };
+
+        var lineChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                label: 'Line Chart',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                data: [10, 20, 30]
+            }]
+        };
+
+        var doughnutChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                data: [10, 20, 30],
+                backgroundColor: ['rgba(255, 99, 132, 0.5)' , 'rgba(60, 60, 60, 0.5)' , 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)']
+            }]
+        };
+
+        var radarChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                label: 'Radar Chart',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                data: [10, 20, 30]
+            }]
+        };
+
+        var polarAreaChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                data: [10, 20, 30],
+                backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)']
+            }]
+        };
+        
+
+        // Get chart elements and initialize charts
+        var barChartElement = document.getElementById('barChart');
+        var lineChartElement = document.getElementById('lineChart');
+        var doughnutChartElement = document.getElementById('doughnutChart');
+        var radarChartElement = document.getElementById('radarChart');
+        var polarAreaChartElement = document.getElementById('polarAreaChart');
+        var scatterChartElement = document.getElementById('scatterChart');
+        
+        var scatterChartData = {
+            labels: ["test1", "test2", "test3"],
+            datasets: [{
+            label: 'Scatter Chart',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 2,
+            data: [
+            { x: "test1", y: 20 },
+            { x: "test2", y: 10 },
+            { x: "test3", y: 30 },
+            ]
+            }]
+            };
+            var scatterChart = new Chart(scatterChartElement, {
+            type: 'scatter',
+            data: scatterChartData,
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                        position: 'bottom',
+                        categories: scatterChartData.labels
+                    },
+                    y: {
+                        beginAtZero: true,
+                    },
+                }
+            }
+            });
+
+        
+
+        var barChart = new Chart(barChartElement, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        stacked: true,
+                    },
+                    y: {
+                        beginAtZero: true,
+                        stacked: true,
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Taille des Produits dans Chaque Qualité"
+                }
+            }
+        });
+
+        var lineChart = new Chart(lineChartElement, {
+            type: 'line',
+            data: lineChartData,
+        });
+
+        var doughnutChart = new Chart(doughnutChartElement, {
+            type: 'doughnut',
+            data: doughnutChartData,
+        });
+
+        var radarChart = new Chart(radarChartElement, {
+            type: 'radar',
+            data: radarChartData,
+        });
+
+        var polarAreaChart = new Chart(polarAreaChartElement, {
+            type: 'polarArea',
+            data: polarAreaChartData,
+        });
+
+        function formatDate(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+    </script>
+{% endblock %}  
